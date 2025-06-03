@@ -1,0 +1,22 @@
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\bin\Debug\PiskaBobraFormsApp1.exe.config
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\bin\Debug\PiskaBobraFormsApp1.exe
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\bin\Debug\PiskaBobraFormsApp1.pdb
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.csproj.AssemblyReference.cache
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.Form1.resources
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.Properties.Resources.resources
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.csproj.GenerateResource.cache
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.csproj.CoreCompileInputs.cache
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.exe
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.pdb
+C:\Users\pavel\Desktop\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.Form2.resources
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\bin\Debug\PiskaBobraFormsApp1.exe.config
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\bin\Debug\PiskaBobraFormsApp1.exe
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\bin\Debug\PiskaBobraFormsApp1.pdb
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.csproj.AssemblyReference.cache
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.Form1.resources
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.Form2.resources
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.Properties.Resources.resources
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.csproj.GenerateResource.cache
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.csproj.CoreCompileInputs.cache
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.exe
+C:\Users\anton\Desktop\Новая папка (2)\PiskaBobraFormsApp1\PiskaBobraFormsApp1\obj\Debug\PiskaBobraFormsApp1.pdb
