@@ -36,22 +36,27 @@ namespace PiskaBobraFormsApp1
                 Options = options;
             }
         }
-
+ 
         List<Question> questions = new List<Question>()
         {
-            new Question(QuestionType.NumericPair, new Tuple<double, double>(2.0, -3.0), new List<string> { "2 и -3", "3 и -2", "1 и -4" }),
-            new Question(QuestionType.NumericPair, new Tuple<double, double>(1.0, 1.0), new List<string> { "1 и 1", "2 и 0", "0.5 и 1.5" }),
-            new Question(QuestionType.Text, "Пифагор", new List<string> { "Пифагор", "Архимед", "Евклид" }),
-            new Question(QuestionType.NumericPair, new Tuple<double, double>(4.0, -2.0), new List<string> { "4 и -2", "-4 и 2", "3 и -1" })
+            new Question(QuestionType.NumericPair, new Tuple<double, double>(2.0, -3.0), new List<string> { "2 и -3", "3 и -2", "1 и -4", "-1 и 1" }),
+            new Question(QuestionType.NumericPair, new Tuple<double, double>(1.0, -4.0), new List<string> { "2 и -3", "3 и -2", "1 и -4", "-1 и 1" }),
+            new Question(QuestionType.Text, "Архимед", new List<string> { "Пифагор", "Архимед", "Евклид", "Декарт" }),
+            new Question(QuestionType.NumericPair, new Tuple<double, double>(-1.0, 1.0), new List<string> { "4 и -2", "-4 и 2", "3 и -1", "-1 и 1" })
         };
 
         void LoadRound(int round)
         {
-            radioButton1.Visible = radioButton2.Visible = radioButton3.Visible = false;
+            // Скрываем кнопку "Ответить" если все вопросы отвечены
+            button1.Visible = userAnswers.Count < questions.Count;
+
+            // Скрываем все radioButton'ы перед загрузкой нового вопроса
+            radioButton1.Visible = radioButton2.Visible = radioButton3.Visible = radioButton4.Visible = false;
 
             if (round > questions.Count)
             {
-                button1.Enabled = false;
+                button1.Visible = false;
+                button3.Enabled = false;
                 pictureBox1.Image = null;
                 SaveResults();
                 return;
@@ -62,15 +67,38 @@ namespace PiskaBobraFormsApp1
 
             var question = questions[round - 1];
             this.Text = question.Type == QuestionType.NumericPair ?
-                "Режим конторольной работы" :
+                "Режим контрольной работы" :
                 "Выберите правильный ответ:";
 
+            // Устанавливаем текст для radioButton'ов
             radioButton1.Text = question.Options[0];
             radioButton2.Text = question.Options[1];
             radioButton3.Text = question.Options[2];
+            radioButton4.Text = question.Options.Count > 3 ? question.Options[3] : "";
 
-            radioButton1.Visible = radioButton2.Visible = radioButton3.Visible = true;
-            button1.Text = "Ответить";
+            // Показываем только нужные radioButton'ы
+            radioButton1.Visible = true;
+            radioButton2.Visible = true;
+            radioButton3.Visible = true;
+            radioButton4.Visible = question.Options.Count > 3;
+
+            // Устанавливаем выбранный вариант, если ответ уже был дан
+            if (userAnswers.Count >= round)
+            {
+                string prevAnswer = userAnswers[round - 1].ToString();
+                if (radioButton1.Text == prevAnswer) radioButton1.Checked = true;
+                else if (radioButton2.Text == prevAnswer) radioButton2.Checked = true;
+                else if (radioButton3.Text == prevAnswer) radioButton3.Checked = true;
+                else if (radioButton4.Visible && radioButton4.Text == prevAnswer) radioButton4.Checked = true;
+            }
+            else
+            {
+                radioButton1.Checked = radioButton2.Checked = radioButton3.Checked = radioButton4.Checked = false;
+            }
+
+            // Управление доступностью кнопок "Назад" и "Вперёд"
+            button4.Enabled = currentRound > 1;
+            button3.Enabled = currentRound < questions.Count;
         }
 
         void ResetRadioStyles()
@@ -78,7 +106,8 @@ namespace PiskaBobraFormsApp1
             radioButton1.ForeColor = SystemColors.ControlText;
             radioButton2.ForeColor = SystemColors.ControlText;
             radioButton3.ForeColor = SystemColors.ControlText;
-            radioButton1.Font = radioButton2.Font = radioButton3.Font = radioDefaultFont;
+            radioButton4.ForeColor = SystemColors.ControlText;
+            radioButton1.Font = radioButton2.Font = radioButton3.Font = radioButton4.Font = radioDefaultFont;
         }
 
         bool CheckAnswer(int round, int selectedOptionIndex)
@@ -108,13 +137,14 @@ namespace PiskaBobraFormsApp1
                 case 0: return radioButton1.Text;
                 case 1: return radioButton2.Text;
                 case 2: return radioButton3.Text;
+                case 3: return radioButton4.Text;
                 default: return "";
             }
         }
 
         private void SaveResults()
         {
-            string fileName = $"Результаты_конторольной_работы_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+            string fileName = $"Результаты_контрольной_работы_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
             int grade = CalculateGrade(score, questions.Count);
 
             try
@@ -130,9 +160,19 @@ namespace PiskaBobraFormsApp1
                     {
                         sw.WriteLine($"\nВопрос #{i + 1}");
                         sw.WriteLine($"Тип вопроса: {questions[i].Type}");
-                        sw.WriteLine($"Ваш ответ: {userAnswers[i]}");
+
+                        if (i < userAnswers.Count)
+                        {
+                            sw.WriteLine($"Ваш ответ: {userAnswers[i]}");
+                            sw.WriteLine($"Результат: {(IsAnswerCorrect(i) ? "Правильно" : "Неправильно")}");
+                        }
+                        else
+                        {
+                            sw.WriteLine("Ваш ответ: (не был дан)");
+                            sw.WriteLine("Результат: Неправильно");
+                        }
+
                         sw.WriteLine($"Правильный ответ: {FormatAnswer(questions[i].CorrectAnswer)}");
-                        sw.WriteLine($"Результат: {(IsAnswerCorrect(i) ? "Правильно" : "Неправильно")}");
                     }
                 }
 
@@ -164,32 +204,6 @@ namespace PiskaBobraFormsApp1
             return userAnswer.Equals(correctAnswer, StringComparison.OrdinalIgnoreCase);
         }
 
-        private void ApplyAnswerStyles(bool isCorrect, int selectedIndex)
-        {
-            ResetRadioStyles();
-            int correctIndex = -1;
-
-            var question = questions[currentRound - 1];
-            for (int i = 0; i < 3; i++)
-            {
-                if (GetRadioText(i) == FormatAnswer(question.CorrectAnswer))
-                {
-                    correctIndex = i;
-                    break;
-                }
-            }
-
-            if (isCorrect)
-            {
-                SetRadioStyle(selectedIndex, Color.Green, FontStyle.Bold);
-            }
-            else
-            {
-                SetRadioStyle(selectedIndex, Color.Red, FontStyle.Italic);
-                SetRadioStyle(correctIndex, Color.Green, FontStyle.Bold);
-            }
-        }
-
         private void SetRadioStyle(int index, Color color, FontStyle style)
         {
             RadioButton rb = null;
@@ -198,6 +212,7 @@ namespace PiskaBobraFormsApp1
                 case 0: rb = radioButton1; break;
                 case 1: rb = radioButton2; break;
                 case 2: rb = radioButton3; break;
+                case 3: rb = radioButton4; break;
             }
 
             if (rb != null)
@@ -225,22 +240,11 @@ namespace PiskaBobraFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (button1.Text == "Далее")
-            {
-                currentRound++;
-                LoadRound(currentRound);
-                return;
-            }
-            else if (button1.Text == "Завершить")
-            {
-                SaveResults(); // Сохраняем результаты и закрываем форму
-                return;
-            }
-
             int selectedIndex = -1;
             if (radioButton1.Checked) selectedIndex = 0;
             else if (radioButton2.Checked) selectedIndex = 1;
             else if (radioButton3.Checked) selectedIndex = 2;
+            else if (radioButton4.Checked) selectedIndex = 3;
 
             if (selectedIndex == -1)
             {
@@ -250,32 +254,72 @@ namespace PiskaBobraFormsApp1
 
             string selectedText = GetRadioText(selectedIndex);
             bool isCorrect = CheckAnswer(currentRound, selectedIndex);
-            userAnswers.Add(selectedText);
+
+            if (userAnswers.Count >= currentRound)
+                userAnswers[currentRound - 1] = selectedText;
+            else
+                userAnswers.Add(selectedText);
 
             if (isCorrect) score++;
-            ApplyAnswerStyles(isCorrect, selectedIndex);
 
-            if (isCorrect)
+            // Скрываем кнопку "Ответить" если ответили на все вопросы
+            button1.Visible = userAnswers.Count < questions.Count;
+
+            if (currentRound < questions.Count)
             {
-                MessageBox.Show("Верно!", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                currentRound++;
+                LoadRound(currentRound);
             }
             else
             {
-                var question = questions[currentRound - 1];
-                MessageBox.Show($"Неверно. Правильный ответ: {FormatAnswer(question.CorrectAnswer)}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                button3.Enabled = false;
+                SaveResults();
             }
+        }
 
-            if (currentRound == questions.Count)
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (currentRound > 1)
             {
-                button1.Text = "Завершить";
+                currentRound--;
+                LoadRound(currentRound);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (currentRound < questions.Count)
+            {
+                currentRound++;
+                LoadRound(currentRound);
+            }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if (userAnswers.Count < questions.Count)
+            {
+                var result = MessageBox.Show("Вы ответили не на все вопросы. Завершить тест досрочно?",
+                                             "Подтверждение",
+                                             MessageBoxButtons.YesNo,
+                                             MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    SaveResults();
+                }
             }
             else
             {
-                button1.Text = "Далее";
+                SaveResults();
             }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
         {
 
         }
@@ -285,32 +329,7 @@ namespace PiskaBobraFormsApp1
 
         }
 
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button6_Click(object sender, EventArgs e)
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
 
         }
