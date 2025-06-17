@@ -10,21 +10,11 @@ using System.Windows.Forms;
 
 namespace PiskaBobraFormsApp1
 {
-    public partial class Form3 : Form
+    public partial class Hint : Form
     {
-        public Form3()
+        public Hint()
         {
             InitializeComponent();
-        }
-
-        private void Form3_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
